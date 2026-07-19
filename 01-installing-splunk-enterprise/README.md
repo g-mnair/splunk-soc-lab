@@ -137,5 +137,9 @@ Initially, the Linux system was unable to forward logs to the Windows machine du
 
 The forwarder configuration, receiving port (TCP 9997), Windows Defender Firewall rules, and Linux UFW rules were reviewed and corrected until communication between both systems was successfully established.
 
+---
+
+## Outcome
+A centralized log collection environment was successfully deployed using Splunk Enterprise and the Splunk Universal Forwarder. Linux system and authentication logs were securely forwarded from the Kali Linux endpoint to the Windows-based Splunk server, where they could be searched, monitored, and analyzed.
 
 
