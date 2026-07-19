@@ -7,9 +7,9 @@ The objective of this lab was to build a centralized log collection environment 
 
 ## Architecture & Lab Environment Details
 
-* **Central SIEM Monitoring System:** Splunk Enterprise (v9.2.1) hosted on Windows 11
+* **Central SIEM Monitoring System:** Splunk Enterprise (v10.4.1) hosted on Windows 11
 * **Monitored Endpoint:** Kali Linux Rolling Distribution hosted on Oracle VirtualBox
-* **Log Forwarder:** Splunk Universal Forwarder (v9.2.1)
+* **Log Forwarder:** Splunk Universal Forwarder (v10.4.1)
 * **Default Log Forwarding Port:** TCP 9997
 
 ---
@@ -30,13 +30,13 @@ The objective of this lab was to build a centralized log collection environment 
 1. Downloaded the Splunk Universal Forwarder package using:
 
 ```bash
-wget -O splunkforwarder-9.2.1-78803f08aabb-Linux-x86_64.tgz "https://download.splunk.com/products/universalforwarder/releases/9.2.1/linux/splunkforwarder-9.2.1-78803f08aabb-Linux-x86_64.tgz"
+wget -O splunkforwarder-10.4.1-78803f08aabb-Linux-x86_64.tgz "https://download.splunk.com/products/universalforwarder/releases/10.4.1/linux/splunkforwarder-10.4.1-78803f08aabb-Linux-x86_64.tgz"
 ```
 
 2. Extracted the downloaded package:
 
 ```bash
-tar -xvzf splunkforwarder-9.2.1-78803f08aabb-Linux-x86_64.tgz
+tar -xvzf splunkforwarder-10.4.1-78803f08aabb-Linux-x86_64.tgz
 ```
 
 3. Moved the extracted folder to the `/opt` directory and navigated to the Splunk binary folder:
@@ -60,12 +60,12 @@ The `inputs.conf` file was updated to monitor Linux system logs and authenticati
 ```ini
 [monitor:///var/log/syslog]
 disabled = false
-index = main
+index = linux_log
 sourcetype = syslog
 
 [monitor:///var/log/auth.log]
 disabled = false
-index = main
+index = linux_log
 sourcetype = authlog
 ```
 
@@ -87,13 +87,29 @@ sudo ufw allow out to any port 9997 proto tcp
 
 ---
 
-## Visual Verification & Log Validation
+---
 
-To verify that the setup was successful, the Splunk Web interface was accessed through `http://localhost:8000`.
+---
 
-Using the **Search & Reporting** application and the **Data Summary** page, the Kali Linux host was successfully detected, confirming that Linux system logs were being forwarded and indexed by Splunk Enterprise.
+## Visual Verification & Telemetry Validation
 
-*Insert a screenshot showing the Data Summary or Search & Reporting page with the Kali Linux host.*
+To verify that the network architecture and ingestion pipeline were successfully deployed, three distinct validation steps were completed within the central Splunk Enterprise console:
+
+### 1. Inbound Network Listener Verification
+Navigating to **Settings** -> **Forwarding and receiving** confirms that the Windows host is actively listening for inbound traffic over the designated security telemetry port.
+
+![Splunk Inbound Listening Port Verification](splunk_listening_port.png)
+
+### 2. Active Endpoint Connectivity
+Opening the **Search & Reporting** interface and checking the metadata properties verifies that the remote Kali Linux node is actively communicating and delivering live logs to the manager.
+
+![Splunk Host Connectivity Verification](splunk_logs_verified.png)
+
+### 3. Raw Log Parsing & Security Field Extraction
+Executing a targeted Search Processing Language (SPL) query (`index=* sourcetype=authlog`) displays the live Linux telemetry streams. Splunk successfully parses the raw command-line events into searchable key-value fields such as `USER`, `COMMAND`, and `TTY` along the interesting fields sidebar, proving active data normalization.
+
+![Splunk Raw Log Field Extraction](splunk_raw_log_fields.png)
+
 
 ---
 
