@@ -21,14 +21,16 @@ The objective of this lab was to build a centralized log collection environment 
 
 ### 2. Forwarder Deployment & Directory Setup (Kali Linux Endpoint)
 1. Pulled the archived deployment package utilizing the command line download tool:
-   ```bash
-   wget -O splunkforwarder-9.2.1-78803f08aabb-Linux-x86_64.tgz "https://splunk.com"
-   ```
+
+```bash
+wget -O splunkforwarder-9.2.1-78803f08aabb-Linux-x86_64.tgz "https://download.splunk.com/products/universalforwarder/releases/9.2.1/linux/splunkforwarder-9.2.1 78803f08aabb-Linux-x86_64.tgz"
+```
+
 2. Unpacked the zipped repository to retrieve the system binary structure:
    ```bash
    tar -xvzf splunkforwarder-9.2.1-78803f08aabb-Linux-x86_64.tgz
    ```
-3. Migrated files to the root system operating directory and accessed the execution paths:
+3. Migrated files to the root system operating directory (/opt) and accessed the execution paths:
    ```bash
    sudo mv splunkforwarder /opt/ && cd /opt/splunkforwarder/bin
    ```
@@ -71,10 +73,17 @@ To validate successful multi-platform integration, the central Splunk console wa
 
 ---
 
-## Defensive Engineering Skills Demonstrated
-* **Cross-Platform Infrastructure Architecture:** Building pipeline tunnels connecting Windows hosts and Linux guest nodes.
-* **SIEM Management & Network Ingestion:** Provisioning listener ports and managing local network telemetry flow.
-* **Linux Agent Configuration:** Manual installation and management of terminal configurations and configuration scripts (`inputs.conf`).
-* **Perimeter Security Policy Tweaking:** Writing host-based firewall rules via Windows Advanced Inbound and Linux UFW utilities.
+---
+
+## Challenges Encountered & Problem Solving
+
+### 1. Delayed Log Collection & Ingestion Latency
+* **The Problem:** During testing, newly generated security logs from the Kali Linux endpoint occasionally required several minutes before becoming visibly indexed within the central Splunk search interface.
+* **The Resolution:** After systematically verifying the local forwarder configuration settings, the latency was monitored and confirmed to be standard operational forwarding and indexing queue delays rather than a configuration error.
+
+### 2. Network Communication & Forwarding Failures
+* **The Problem:** Initial log forwarding attempts failed to reach the central Windows instance due to network communication roadblocks stemming from dynamic IP shifts, incorrect port assignments, or host-based firewall settings.
+* **The Resolution:** The network pipeline was systematically troubleshooted. The `outputs.conf` destination configurations, the central TCP/9997 receiving port status, and both Windows Defender Inbound rules and Linux UFW rules were reviewed and corrected until persistent cross-platform communication was successfully established.
+
 
 
