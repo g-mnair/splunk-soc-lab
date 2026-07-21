@@ -44,14 +44,14 @@ The following table introduces the fundamental SPL commands used throughout this
 
 | Command | Purpose | Example Query | Lab Purpose |
 | :--- | :--- | :--- | :--- |
-| **Index Search** | Search all data inside a specific storage bucket. | `index=linux_logs` | Restricts the search to the relevant project logs instead of searching every indexed event. |
-| **Host Filter** | Search events originating from a specific machine. | `index=linux_logs host=kali` | Focuses the investigation on a particular system. |
-| **Source Filter** | Search events from a specific log file. | `index=linux_logs source="/var/log/auth.log"` | Targets authentication logs for user activity analysis. |
-| **Sourcetype Filter** | Search events based on their log format. | `index=linux_logs sourcetype=syslog` | Limits searches to system log events parsed using the syslog format. |
-| **Table** | Display selected fields in a structured format. | `index=linux_logs \| table _time, host, source` | Produces cleaner search results by displaying only the required fields. |
-| **Sort** | Arrange search results chronologically or numerically. | `index=linux_logs \| sort -_time` | Displays the most recent events first. |
-| **Rename** | Rename a field within the search results. | `index=linux_logs \| rename host AS Machine` | Improves readability when presenting search results. |
-| **Wildcards** | Search using placeholder characters. | `index=linux_logs source="*/auth.log"` | Matches log file paths even when directory structures vary. |
+| **Index Search** | Search all data inside a specific storage bucket. | `index=linux_log` | Restricts the search to the relevant project logs instead of searching every indexed event. |
+| **Host Filter** | Search events originating from a specific machine. | `index=linux_log host=kali` | Focuses the investigation on a particular system. |
+| **Source Filter** | Search events from a specific log file. | `index=linux_log source="/var/log/auth.log"` | Targets authentication logs for user activity analysis. |
+| **Sourcetype Filter** | Search events based on their log format. | `index=linux_log sourcetype=syslog` | Limits searches to system log events parsed using the syslog format. |
+| **Table** | Display selected fields in a structured format. | `index=linux_log \| table _time, host, source` | Produces cleaner search results by displaying only the required fields. |
+| **Sort** | Arrange search results chronologically or numerically. | `index=linux_log \| sort -_time` | Displays the most recent events first. |
+| **Rename** | Rename a field within the search results. | `index=linux_log \| rename host AS Machine` | Improves readability when presenting search results. |
+| **Wildcards** | Search using placeholder characters. | `index=linux_log source="*/auth.log"` | Matches log file paths even when directory structures vary. |
 
 ---
 
@@ -97,10 +97,10 @@ After identifying the appropriate data source, SPL searches can be refined to lo
 Displays failed SSH authentication attempts recorded in the authentication log.
 
 ```spl
-index=linux_logs "Failed password"
+index=linux_log "Failed password"
 ```
 
-📸 *failed_ssh_logins_verification.png*
+📸 *failed_ssh_login_verification.png*
 
 ---
 
@@ -109,10 +109,10 @@ index=linux_logs "Failed password"
 Displays successful SSH authentication events.
 
 ```spl
-index=linux_logs "Accepted password"
+index=linux_log "Accepted password"
 ```
 
-📸 *successful_logins_verification.png*
+📸 *successful_login_verification.png*
 
 ---
 
@@ -121,7 +121,7 @@ index=linux_logs "Accepted password"
 Displays commands executed with elevated administrative privileges.
 
 ```spl
-index=linux_logs sudo
+index=linux_log sudo
 ```
 
 📸 *sudo_commands_verification.png*
@@ -133,7 +133,7 @@ index=linux_logs sudo
 Returns all events associated with the specified username.
 
 ```spl
-index=linux_logs Gayathri
+index=linux_log Gayathri
 ```
 
 📸 *user_search_verification.png*
@@ -151,7 +151,7 @@ Transforming commands summarize raw events into organized statistics and visual 
 Returns the total number of events matching the search criteria.
 
 ```spl
-index=linux_logs
+index=linux_log
 | stats count
 ```
 
@@ -164,7 +164,7 @@ index=linux_logs
 Groups event counts by host.
 
 ```spl
-index=linux_logs
+index=linux_log
 | stats count by host
 ```
 
@@ -177,7 +177,7 @@ index=linux_logs
 Groups event counts by sourcetype.
 
 ```spl
-index=linux_logs
+index=linux_log
 | stats count by sourcetype
 ```
 
@@ -190,7 +190,7 @@ index=linux_logs
 Displays the distribution of events grouped by sourcetype.
 
 ```spl
-index=linux_logs
+index=linux_log
 | chart count by sourcetype
 ```
 
@@ -206,19 +206,19 @@ Time modifiers restrict searches to a defined time period, reducing the number o
 - **Last 15 Minutes**
 
 ```spl
-index=linux_logs earliest=-15m
+index=linux_log earliest=-15m
 ```
 
 - **Last Hour**
 
 ```spl
-index=linux_logs earliest=-1h
+index=linux_log earliest=-1h
 ```
 
 - **Last 24 Hours**
 
 ```spl
-index=linux_logs earliest=-24h
+index=linux_log earliest=-24h
 ```
 
 ---
@@ -230,7 +230,7 @@ The following examples demonstrate common SPL searches used during Linux log ana
 ### Identify Failed Login Volume by Host
 
 ```spl
-index=linux_logs "Failed password"
+index=linux_log "Failed password"
 | stats count by host
 ```
 
@@ -241,18 +241,18 @@ index=linux_logs "Failed password"
 ### Identify Successful Logins by Host
 
 ```spl
-index=linux_logs "Accepted password"
+index=linux_log "Accepted password"
 | stats count by host
 ```
 
-📸 *successful_logins_by_host_verification.png*
+📸 *successful_login_by_host_verification.png*
 
 ---
 
 ### Monitor Administrative Sudo Executions
 
 ```spl
-index=linux_logs sudo
+index=linux_log sudo
 ```
 
 📸 *admin_sudo_execution_verification.png*
@@ -262,7 +262,7 @@ index=linux_logs sudo
 ### Track Total Events Over Time
 
 ```spl
-index=linux_logs
+index=linux_log
 | timechart count
 ```
 
