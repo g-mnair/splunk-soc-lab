@@ -224,7 +224,7 @@ index="linux_log" Failed password
 | stats count by host
 ```
 
-!failed_login_volume_by_host_verification.png*
+![failed login volume by host](failed_login_volume_by_host_verification.png)
 
 ---
 
