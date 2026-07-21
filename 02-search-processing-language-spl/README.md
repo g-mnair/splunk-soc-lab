@@ -277,4 +277,3 @@ index="linux_log"
 
 In this lab, the fundamental features of Splunk Search Processing Language (SPL) were explored by searching, filtering, transforming, and summarizing Linux log data. The exercises demonstrated how SPL can be used to investigate authentication events, organize search results, generate statistical summaries, and visualize system activity.
 
-The concepts covered in this lab provide the foundation for the upcoming modules on security detection, brute-force investigations, threat hunting, and Splunk dashboard creation.
