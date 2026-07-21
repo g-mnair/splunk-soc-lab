@@ -14,10 +14,11 @@ Upon successful completion of this lab, you will be able to:
 - Filter, display, rename, and sort relevant log fields.
 - Generate event counts and basic statistical summaries.
 - Organize search results into tables and charts.
-- Perform searches using time modifiers and wildcard characters.
+- Perform searches using time modifiers.
 - Build foundational SPL queries used in day-to-day security monitoring.
 
 ---
+
 
 ## 📋 Prerequisites
 
