@@ -220,7 +220,7 @@ The following examples demonstrate common SPL searches used during Linux log ana
 ### Identify Failed Login Volume by Host
 
 ```spl
-index=linux_log "Failed password"
+index="linux_log" Failed password
 | stats count by host
 ```
 
@@ -231,18 +231,38 @@ index=linux_log "Failed password"
 ### Identify Successful Logins by Host
 
 ```spl
-index=linux_log "Accepted password"
+index="linux_log" Accepted password
 | stats count by host
 ```
 
 📸 *successful_login_by_host_verification.png*
 
 ---
+### Identify Failed login by User
+
+```spl
+index="linux_log" failed password
+| stats count by alex
+```
+
+
+
+### Successful Login Activity Above a Threshold
+
+```spl
+index="linux_logs" Accepted password
+| stats count by host
+| where count > 5
+```
+
+📸 *successful_login_threshold_verification.png*
+
+---
 
 ### Monitor Administrative Sudo Executions
 
 ```spl
-index=linux_log sudo
+index="linux_log" sudo
 ```
 
 📸 *admin_sudo_execution_verification.png*
@@ -252,7 +272,7 @@ index=linux_log sudo
 ### Track Total Events Over Time
 
 ```spl
-index=linux_log
+index="linux_log"
 | timechart count
 ```
 
