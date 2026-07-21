@@ -97,10 +97,9 @@ After identifying the appropriate data source, SPL searches can be refined to lo
 Displays failed SSH authentication attempts recorded in the authentication log.
 
 ```spl
-index=linux_log "Failed password"
+index="linux_log" failed password 
 ```
 
-📸 *failed_ssh_login_verification.png*
 
 ---
 
@@ -109,10 +108,9 @@ index=linux_log "Failed password"
 Displays successful SSH authentication events.
 
 ```spl
-index=linux_log "Accepted password"
+index="linux_log" Accepted password
 ```
 
-📸 *successful_login_verification.png*
 
 ---
 
@@ -121,10 +119,8 @@ index=linux_log "Accepted password"
 Displays commands executed with elevated administrative privileges.
 
 ```spl
-index=linux_log sudo
+index="linux_log" sudo
 ```
-
-📸 *sudo_commands_verification.png*
 
 ---
 
@@ -133,10 +129,9 @@ index=linux_log sudo
 Returns all events associated with the specified username.
 
 ```spl
-index=linux_log Gayathri
+index="linux_log" alex
 ```
 
-📸 *user_search_verification.png*
 
 ---
 
@@ -151,11 +146,10 @@ Transforming commands summarize raw events into organized statistics and visual 
 Returns the total number of events matching the search criteria.
 
 ```spl
-index=linux_log
+index= "linux_log"
 | stats count
 ```
 
-📸 *stats_count_total_verification.png*
 
 ---
 
@@ -164,11 +158,10 @@ index=linux_log
 Groups event counts by host.
 
 ```spl
-index=linux_log
+index="linux_log"
 | stats count by host
 ```
 
-📸 *stats_count_by_host_verification.png*
 
 ---
 
@@ -177,24 +170,21 @@ index=linux_log
 Groups event counts by sourcetype.
 
 ```spl
-index=linux_log
+index="linux_log"
 | stats count by sourcetype
 ```
 
-📸 *stats_count_by_sourcetype_verification.png*
 
 ---
 
 ### Chart Events by Sourcetype
 
-Displays the distribution of events grouped by sourcetype.
+Displays the distribution of events grouped by host and sourcetype.
 
 ```spl
-index=linux_log
-| chart count by sourcetype
+index="linux_log"
+| chart by host,sourcetype
 ```
-
-📸 *chart_by_sourcetype_verification.png*
 
 ---
 
@@ -206,19 +196,19 @@ Time modifiers restrict searches to a defined time period, reducing the number o
 - **Last 15 Minutes**
 
 ```spl
-index=linux_log earliest=-15m
+index="linux_log" earliest=-15m
 ```
 
 - **Last Hour**
 
 ```spl
-index=linux_log earliest=-1h
+index="linux_log" earliest=-1h
 ```
 
 - **Last 24 Hours**
 
 ```spl
-index=linux_log earliest=-24h
+index="linux_log" earliest=-24h
 ```
 
 ---
