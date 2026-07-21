@@ -1,0 +1,127 @@
+# Module 02: Search Processing Language (SPL) Fundamentals
+
+## 📌 Objective
+The objective of this lab is to learn the fundamentals of Splunk's Search Processing Language (SPL). You will practice querying, filtering, transforming, and visualizing Linux log data collected from your lab environment.
+
+## 🎯 Learning Outcomes
+By the end of this lab, you will be able to:
+* Search indexed log data and filter specific security events.
+* Select, display, rename, and sort specific data fields.
+* Count events and generate clear statistics.
+* Aggregate data into clean tables and charts.
+* Limit searches using time ranges and wildcards.
+* Build basic SPL queries for daily security monitoring.
+
+## 📋 Prerequisites
+* Splunk Enterprise installed and running.
+* Universal Forwarder configured on the Kali Linux VM.
+* Linux logs successfully indexed into Splunk.
+* Access to the default Splunk Search & Reporting app.
+
+---
+
+## 1. Introduction to SPL
+Splunk Search Processing Language (SPL) is used to search, filter, analyze, and visualize machine-generated data. SOC analysts use SPL every day to investigate alerts, hunt threats, identify suspicious behavior, and create detections. Without SPL, logs are just raw text; SPL turns them into actionable intelligence.
+
+---
+
+## 2. Basic Filtering & Formatting Commands
+Before aggregating your data, you must know how to locate and view it clearly. The table below outlines the foundational commands used to filter and format raw logs.
+
+| Command | Purpose | Example Query | Why We Use It |
+| :--- | :--- | :--- | :--- |
+| **Index Search** | Search all data inside a specific storage bucket. | `index=linux_logs` | Limits our search to only the relevant project logs instead of searching everything. |
+| **Host Filter** | Look for data coming from a specific machine. | `index=linux_logs host=kali` | Helps isolate an investigation to one specific compromised system. |
+| **Source Filter** | Look for logs from a specific file path. | `index=linux_logs source="/var/log/auth.log"` | Targets the exact log file responsible for authentication events. |
+| **Sourcetype Filter** | Search by the specific format of the data. | `index=linux_logs sourcetype=syslog` | Helps Splunk apply the correct parsing rules to standard system logs. |
+| **String Search** | Find exact keyword matches inside logs. | `index=linux_logs "Failed password"` | Quickly pulls up specific activities like failed logins or errors. |
+| **Table** | Display data in clean, customized columns. | `index=linux_logs \| table _time, host, source` | Cleans up the screen by hiding messy metadata and showing only needed fields. |
+| **Sort** | Order your results chronologically or numerically. | `index=linux_logs \| sort -_time` | Putting a minus (`-`) before the field sorts events from newest to oldest. |
+| **Rename** | Change a column header name on the fly. | `index=linux_logs \| rename host AS Machine` | Makes presentation data and reports easier for non-technical managers to read. |
+| **Wildcards** | Search using a placeholder for unknown characters. | `index=linux_logs source="*/auth.log"` | Finds files matching the pattern even if the folder path changes. |
+
+---
+
+## 3. Transforming & Statistical Commands
+Transforming commands turn raw log events into organized data summaries, counts, and visual metrics.
+
+### Event Counting & Scarcity
+* **Count Total Events:** Counts every single event returned by the search.
+  ```splunk
+  index=linux_logs | stats count
+  ```
+* **Count by Category:** Breaks down the total log count based on specific hosts or data types.
+  ```splunk
+  index=linux_logs | stats count by host
+  ```
+* **Top & Rare Events:** `top` finds the most common values in a dataset, while `rare` finds the least common (anomalies).
+  ```splunk
+  index=linux_logs | top source
+  ```
+  ```splunk
+  index=linux_logs | rare source
+  ```
+
+### Advanced Statistical Aggregation
+* **Aggregating Activity by Host & User:**
+  ```splunk
+  index=linux_logs sourcetype=syslog "sshd"
+  | stats count, dc(process) as unique_processes by host, user
+  | rename count as "Total Attempts"
+  | sort - "Total Attempts"
+  ```
+  * *Why we use it:* This counts interactions and uses `dc` (distinct count) to see if an identity is spawning multiple unique system processes, which is highly unusual.
+
+* **Dynamic Threat Grading with Eval:**
+  ```splunk
+  index=linux_logs sourcetype=syslog "sshd"
+  | stats count by user
+  | eval analyst_priority = case(count > 50, "CRITICAL", count > 15, "MEDIUM", 1=1, "LOW")
+  | sort - count
+  ```
+  * *Why we use it:* The `eval` and `case` functions allow us to inject custom logic to automatically flag high-volume users for rapid analyst triage.
+
+---
+
+## 4. Time-Based Searches
+Restricting your search to specific time windows dramatically speeds up Splunk and focuses your investigation. You can select these in the UI or type them directly into the query bar using the `earliest` command:
+
+* **Last 15 minutes:** `index=linux_logs earliest=-15m`
+* **Last hour:** `index=linux_logs earliest=-1h`
+* **Last 24 hours:** `index=linux_logs earliest=-24h`
+
+---
+
+## 5. Practical Security Monitoring Examples
+Here is a collection of production-ready baseline searches used for monitoring infrastructure:
+
+* **Identify Failed Login Volume by Host:**
+  ```splunk
+  index=linux_logs "Failed password" | stats count by host
+  ```
+* **Identify Successful Logins by Host:**
+  ```splunk
+  index=linux_logs "Accepted password" | stats count by host
+  ```
+* **Monitor Administrative Sudo Executions:**
+  ```splunk
+  index=linux_logs sudo
+  ```
+* **Track Total Events Over a Timeline:**
+  ```splunk
+  index=linux_logs | timechart count
+  ```
+
+---
+
+## 📸 Portfolio Verification Screenshots
+*(Placeholders for lab evidence to show recruiters the live environment output)*
+
+1. `[01_filtering_and_tables.png]` -> Screenshot showing a clean, tabulated view of filtered logs using the `table` and `sort` commands.
+2. `[02_statistical_aggregation.png]` -> Screenshot demonstrating the `stats count` query summarizing log data by host and user.
+3. `[03_timechart_visualization.png]` -> Visual evidence of the `timechart` view showing event trends over a live timeline.
+
+---
+
+## 6. Conclusion
+In this lab, we successfully mastered how to search, filter, and transform raw data streams into organized security intelligence. These fundamental SPL techniques form the absolute foundation for our upcoming modules involving active security detections, brute-force investigations, and advanced threat hunting.
