@@ -30,7 +30,7 @@ Splunk alerts allow security teams to automate the detection of suspicious activ
 * **SPL Query Execution:** 
   The following query filters system logs for the standard Linux SSH failure signature to isolate bad password attempts.
   ```splunk
-  index=linux_logs "Failed password"
+  index="linux_log" Failed password
   ```
 * **Splunk Alert Configuration Settings:**
   * **Alert Title:** `SEC-DET-01: Linux SSH Authentication Failure`
@@ -49,7 +49,7 @@ Splunk alerts allow security teams to automate the detection of suspicious activ
 * **SPL Query Execution:** 
   The following query isolates accepted authentication strings to record successful remote terminal connections.
   ```splunk
-  index=linux_logs "Accepted password"
+  index="linux_log" Accepted password
   ```
 * **Splunk Alert Configuration Settings:**
   * **Alert Title:** `SEC-DET-02: Linux SSH Authentication Success`
@@ -67,7 +67,7 @@ Splunk alerts allow security teams to automate the detection of suspicious activ
 * **SPL Query Execution:** 
   The following query counts successful logins per user and host over the search window, triggering only when the count exceeds the defined threshold.
   ```splunk
-  index=linux_logs "Accepted password" | stats count as success_count by host, user | where success_count > 10
+  index="linux_log" Accepted password | stats count as success_count by host, user | where success_count > 10
   ```
 * **Splunk Alert Configuration Settings:**
   * **Alert Title:** `SEC-DET-03: Excessive Successful Logins Detected`
@@ -86,7 +86,7 @@ Splunk alerts allow security teams to automate the detection of suspicious activ
 * **SPL Query Execution:** 
   The following query captures instances where the sudo subsystem is invoked and outputs a clean table detailing the transaction.
   ```splunk
-  index=linux_logs sudo | table _time, host, user, process, message | sort -_time
+  index="linux_log" sudo | table _time, host, user, process, message | sort -_time
   ```
 * **Splunk Alert Configuration Settings:**
   * **Alert Title:** `SEC-DET-04: Privilege Escalation - Sudo Command Invoked`
@@ -104,7 +104,7 @@ Splunk alerts allow security teams to automate the detection of suspicious activ
 * **SPL Query Execution:** 
   The following query monitors user account management actions by searching for system strings generated when creating new local users or groups.
   ```splunk
-  index=linux_logs "new user" OR "new group" OR "add to group" | table _time, host, process, message
+  index="linux_log" "new user" OR "new group" OR "add to group" | table _time, host, process, message
   ```
 * **Splunk Alert Configuration Settings:**
   * **Alert Title:** `SEC-DET-05: Persistence - New Account or Group Created`
