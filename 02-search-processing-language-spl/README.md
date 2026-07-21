@@ -235,16 +235,9 @@ index="linux_log" Accepted password
 | stats count by host
 ```
 
-📸 *successful_login_by_host_verification.png*
+![Success login by host](successful_login_by_host_verification.png)
 
 ---
-### Identify Failed login by User
-
-```spl
-index="linux_log" failed password
-| stats count by alex
-```
-
 
 
 ### Successful Login Activity Above a Threshold
@@ -255,7 +248,7 @@ index="linux_logs" Accepted password
 | where count > 5
 ```
 
-📸 *successful_login_threshold_verification.png*
+![Successfull login above threshold](successful_login_threshold_verification.png)
 
 ---
 
@@ -265,7 +258,7 @@ index="linux_logs" Accepted password
 index="linux_log" sudo
 ```
 
-📸 *admin_sudo_execution_verification.png*
+![Admin sudo executions](admin_sudo_execution_verification.png)
 
 ---
 
@@ -276,7 +269,7 @@ index="linux_log"
 | timechart count
 ```
 
-📸 *timechart_events_timeline_verification.png*
+![Timechart event timeline](timechart_events_timeline_verification.png)
 
 ---
 
