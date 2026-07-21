@@ -8,14 +8,13 @@ The objective of this lab is to explore the fundamentals of Splunk's Search Proc
 
 ## 🎯 Learning Outcomes
 
-Upon successful completion of this lab, you will be able to:
+By the end of this lab, you will be able to:
 
-- Search indexed log data to locate specific security events.
-- Filter, display, rename, and sort relevant log fields.
-- Generate event counts and basic statistical summaries.
-- Organize search results into tables and charts.
-- Perform searches using time modifiers.
-- Build foundational SPL queries used in day-to-day security monitoring.
+- Understand the fundamentals of Splunk's Search Processing Language (SPL).
+- Search and filter indexed log data to locate relevant security events.
+- Analyze Linux log data using commonly used SPL commands.
+- Perform basic log analysis to support security monitoring and investigations.
+- Build a foundation for more advanced SPL queries used in threat detection and incident analysis.
 
 ---
 
