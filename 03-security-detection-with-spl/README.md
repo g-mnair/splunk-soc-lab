@@ -76,7 +76,7 @@ Splunk alerts allow security teams to automate the detection of suspicious activ
   * **Trigger Condition:** Number of Results > 0
   * **Severity:** High
 
-![Excessive Successful Logins Alert Configuration](excessive_successful_logins_alert_config.png)
+![Excessive Successful Logins Alert Configuration](successful_logins_alert_config.png)
 
 ---
 
