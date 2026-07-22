@@ -39,7 +39,7 @@ Splunk alerts allow security teams to automate the detection of suspicious activ
   * **Trigger Condition:** Number of Results > 0
   * **Severity:** Low
 
-![Failed SSH Login Alert Configuration](assets/failed_ssh_login_alert_config.png)
+![Failed SSH Login Alert Configuration](failed_ssh_login_alert_config.png)
 
 ---
 
@@ -57,7 +57,7 @@ Splunk alerts allow security teams to automate the detection of suspicious activ
   * **Trigger Condition:** Per-Result
   * **Severity:** Informational
 
-![Successful SSH Login Alert Configuration](assets/successful_ssh_login_alert_config.png)
+![Successful SSH Login Alert Configuration](successful_ssh_login_alert_config.png)
 
 ---
 
@@ -76,7 +76,7 @@ Splunk alerts allow security teams to automate the detection of suspicious activ
   * **Trigger Condition:** Number of Results > 0
   * **Severity:** High
 
-![Excessive Successful Logins Alert Configuration](assets/excessive_successful_logins_alert_config.png)
+![Excessive Successful Logins Alert Configuration](excessive_successful_logins_alert_config.png)
 
 ---
 
@@ -94,7 +94,7 @@ Splunk alerts allow security teams to automate the detection of suspicious activ
   * **Trigger Condition:** Per-Result
   * **Severity:** Medium
 
-![Sudo Execution Alert Configuration](assets/sudo_execution_alert_config.png)
+![Sudo Execution Alert Configuration](sudo_execution_alert_config.png)
 
 ---
 
@@ -112,7 +112,7 @@ Splunk alerts allow security teams to automate the detection of suspicious activ
   * **Trigger Condition:** Per-Result
   * **Severity:** Critical
 
-![New User Creation Alert Configuration](assets/new_user_creation_alert_config.png)
+![New User Creation Alert Configuration](new_user_creation_alert_config.png)
 
 ---
 
