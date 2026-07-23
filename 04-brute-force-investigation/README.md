@@ -3,12 +3,12 @@
 ## 📌 Incident Investigation Overview
 This lab demonstrates how Splunk can be used to investigate an SSH brute-force attack against a Linux host. Using authentication logs collected from /var/log/auth.log, I identified failed login attempts, extracted useful fields from raw events, assessed whether any authentication attempts succeeded, and documented recommended response actions for a SOC analyst.
 
-### 💡 Why I Built This
-To be an effective analyst, one must understand how adversarial tools translate into raw telemetry under the hood. By launching a controlled brute-force simulation using industry-standard penetration testing toolsets and immediately pivoting into the SIEM interface, this project provides transparent, hands-on proof of my capability to handle an inbound credential access alert from initial trigger to host-level mitigation.
+### 💡 Project objective
+This project was developed to demonstrate the investigation of authentication-based attacks using Splunk. By generating controlled SSH brute-force activity with Hydra and analyzing the resulting authentication logs, the project showcases the workflow followed by a SOC analyst when investigating credential access attempts.
 
 ---
 
-## 1. Attack Emulation Phase (Threat Actor Perspective)
+## 1. Attack Emulation Phase (Simulated attacker Perspective)
 To generate realistic malicious telemetry within the environment, a high-velocity automated credential harvesting attack was launched against the Linux infrastructure.
 
 ### Step 1: Target Endpoint Configuration
@@ -28,8 +28,8 @@ hydra -l target_user -P /usr/share/wordlists/rockyou.txt ssh://127.0.0.1 -t 4 -V
 
 ## 2. SIEM Triage & Scope Isolation (SOC Analyst Perspective)
 
-### Step 1: Advanced Attacker Footprint Mapping
-Because raw Linux syslogs do not parse distinct user or network fields automatically out of the box, advanced Search Processing Language (SPL) was utilized to inject regular expression (`rex`) extractions. This query isolates the source IP, measures attack velocity, tracks targeted user profiles, and sorts the results to uncover the core threat footprint:
+### Step 1: Attacker Footprint Mapping
+Since the username and source IP were not automatically extracted from the Linux authentication logs, the rex command was used to create searchable fields before analyzing the attack. This query isolates the source IP, measures attack velocity, tracks targeted user profiles, and sorts the results to uncover the core threat footprint:
 
 ```splunk
 index="linux_log" "Failed password" 
@@ -39,9 +39,9 @@ index="linux_log" "Failed password"
 | sort - failed_attempts
 ```
 
-*   **Analyst Evaluation:** A massive surge of sequential failures was confirmed. Because the attack loop ran locally inside the virtual architecture, the source IP aggregates as a loopback identifier (`127.0.0.1`), mimicking either an internal compromised asset or a localized privilege escalation attempt.
+*   **Analyst Evaluation:** The attack originated from '127.0.0.1' because the simulation was performed against the local SSH service within the lab environment. In a production environment, this field would typically contain the attacker's network address.
 
-![Attacker Footprint Mapping Verification](assets/01_attacker_footprint_mapping.png)
+![Attacker Footprint Mapping Verification](01_attacker_footprint_mapping.png)
 
 ---
 
@@ -57,9 +57,9 @@ index="linux_log" "Accepted password"
 | table _time src_ip user _raw
 ```
 
-*   **Analyst Evaluation:** This query returned **0 results** (empty data grid), verifying that perimeter credential harvesting attempts failed, no valid sessions were established, and the direct blast radius of the attack was effectively zero.
+*   **Analyst Evaluation:** This query returned **0 results** (empty data grid). No successful SSH authentication events were observed.
 
-![Authentication Success Audit Verification](assets/02_authentication_success_audit.png)
+![Authentication Success Audit Verification](02_authentication_success_audit.png)
 
 ### Step 2: Post-Auth Kill Chain Assessment Strategy
 While the direct authentication check returned zero entries, a robust analytical mindset recognizes that authentication compromise is merely step one of an adversary's execution tree. If a successful login (`Accepted password`) had been identified, the immediate triage workflow would require running the following secondary inspection queries to map post-compromise actions:
