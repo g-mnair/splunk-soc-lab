@@ -65,7 +65,9 @@ index="linux_log" "Accepted password"
 Although no successful authentication events were identified during the investigation, a successful login would not conclude the analysis. If an Accepted password event had been detected, the next step would be to investigate the attacker's activity after authentication to determine whether any unauthorized actions were performed.
 
 The following investigation steps would typically be performed:
+
 **Review Privileged Command Usage:** Examine system logs for sudo activity to determine whether the authenticated user attempted to execute privileged commands.
+
 **Investigate Post-Login Activity:** Review available system logs for evidence of suspicious activity following authentication, such as unexpected command execution, new SSH sessions, or unusual user behavior.
 
 ---
