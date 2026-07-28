@@ -140,9 +140,11 @@ index="linux_log" "Failed password" earliest=-15m
 Terminal showing failed SSH login attempts against the target host using invalid credentials.
    ![Failed SSH login attempts](rule1_attack.png)
 
-Splunk search (index="linux_log" "Failed password" earliest=-15m) showing the matched failed login events with timestamps. ![Failed SSH login search results(rule1_search_results.png)
+Splunk search (index="linux_log" "Failed password" earliest=-15m) showing the matched failed login events with timestamps.
+![Failed SSH login search results](rule1_search_results.png)
 
-Triggered Alerts page showing SEC-DET-01 fired on 2026-07-28 13:00:01 IST via its scheduled hourly run, Low severity. ![SEC-DET-01 triggered alert](rule1_triggered_alert.png)
+Triggered Alerts page showing SEC-DET-01 fired on 2026-07-28 13:00:01 IST via its scheduled hourly run, Low severity. 
+![SEC-DET-01 triggered alert](rule1_triggered_alert.png)
 
 ---
 
