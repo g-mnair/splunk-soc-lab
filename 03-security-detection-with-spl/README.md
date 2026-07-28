@@ -106,8 +106,9 @@ Splunk alerts allow security teams to automate the detection of suspicious activ
 * **Operational Trigger Logic:** Flags account creation events. Attackers often provision new local accounts to maintain a persistent backdoor inside a compromised network.
 * **SPL Query Execution:** 
   The following query monitors user account management actions by searching for system strings generated when creating new local users or groups.
+  
   ```splunk
-  index="linux_log" "new user" OR "new group" OR "add to group" | table _time, host, process, message
+  index="linux_log" "new user" OR "new group" OR "add to group"| table _time host name UID GID home shell _raw
   ```
 * **Splunk Alert Configuration Settings:**
   * **Alert Title:** `SEC-DET-05: Persistence - New Account or Group Created`
