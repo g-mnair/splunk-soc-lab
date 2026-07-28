@@ -138,7 +138,7 @@ index="linux_log" "Failed password" earliest=-15m
 
 **Screenshots:**
 Terminal showing failed SSH login attempts against the target host using invalid credentials.
-   ![Failed SSH login attempts](rule1_attack.png)
+  ![Failed SSH login attempts](rule1_attack.png)
 
 Splunk search (index="linux_log" "Failed password" earliest=-15m) showing the matched failed login events with timestamps.
 ![Failed SSH login search results](rule1_search_results.png)
@@ -160,9 +160,14 @@ index="linux_log" "Accepted password" earliest=-15m
 **Result:** Alert `SEC-DET-02` triggered immediately in real time, confirming the rule correctly captures successful authentication events as they occur.
 
 **Screenshots:**
-1. Terminal showing successful SSH login *(attack)*
-2. Search results showing the matched "Accepted password" event
-3. Triggered Alerts entry for SEC-DET-02
+Terminal showing a successful SSH login using valid credentials.
+![Successful SSH login](rule2_attack.png)
+
+Splunk search (index="linux_log" "Accepted password" earliest=-15m) showing the matched successful login event.
+![Successful SSH login search results](rule2_search_results.png)
+
+Triggered Alerts page showing SEC-DET-02 fired in real time immediately after the login, Informational severity.
+![SEC-DET-02 triggered alert](rule2_triggered_alert.png)
 
 ---
 
@@ -181,9 +186,14 @@ index="linux_log" Accepted password earliest=-15m
 **Result:** Alert `SEC-DET-03` triggered successfully, correctly identifying a count of 36 successful logins for user `kalivm` on host `kali` — well above the 10-event threshold.
 
 **Screenshots:**
-1. Terminal showing the automated login loop running *(attack)*
-2. Search results (Statistics view) showing `success_count` above 10
-3. Triggered Alerts entry for SEC-DET-03
+Terminal showing the automated loop (sshpass + ssh) generating 12+ successful logins in a short window.
+![Automated login loop](rule3_attack.png)
+
+Splunk Statistics view showing success_count of 36 for user kalivm on host kali, exceeding the 10-event threshold.
+![Excessive login count search results](rule3_search_results.png)
+
+Triggered Alerts page showing SEC-DET-03 fired on its 15-minute schedule, High severity.
+![SEC-DET-03 triggered alert](rule3_triggered_alert.png)
 
 ---
 
@@ -201,9 +211,14 @@ index="linux_log" sudo
 **Result:** Alert `SEC-DET-04` triggered successfully in real time. Each `sudo` invocation generates multiple underlying log lines (session opened, command executed, session closed), and because the trigger is Per-Result, this produced 161 individual alert firings from 2 sudo commands — confirming the detection works and highlighting that per-result real-time alerting on `sudo` activity can generate significant alert volume in a production environment.
 
 **Screenshots:**
-1. Terminal showing sudo commands executed *(attack)*
-2. Search results showing extracted `user` and full command context
-3. Triggered Alerts entries for SEC-DET-04
+Terminal showing privileged commands executed (sudo whoami, sudo ls /var/log).
+![Sudo commands executed](rule4_attack.png)
+
+Splunk search results showing extracted user field and full command context (session opened,command run, session closed) from _raw.
+![Sudo activity search results](rule4_search_results.png)
+
+Triggered Alerts page showing SEC-DET-04 fired in real time for each matching log line, Medium severity.
+![SEC-DET-04 triggered alerts](rule4_triggered_alert.png)
 
 ---
 
@@ -220,10 +235,16 @@ index="linux_log" "new user" OR "new group" OR "add to group"
 **Result:** Alert `SEC-DET-05` triggered successfully in real time, correctly capturing the new account (`name=testuser2`) along with its UID, GID, home directory, and shell.
 
 **Screenshots:**
-1. Terminal showing `useradd` command executed *(attack)*
-2. Search results showing populated `name`, `UID`, `GID`, `home`, `shell` fields
-3. Triggered Alerts entry for SEC-DET-05
+Terminal showing a new local user created (sudo useradd testuser2).
+![New user creation](rule5_attack.png)
 
+Splunk search results showing populated name, UID, GID, home, and shell fields for the newly created account.
+![New user creation search results](rule5_search_results.png)
+
+Triggered Alerts page showing SEC-DET-05 fired in real time, Critical severity.
+![SEC-DET-05 triggered alert](rule5_triggered_alert.png)
+
+---
 
 ## 4. Summary Matrix for SOC Triage
 The saved alerts are consolidated into this master operational matrix. This serves as the primary reference table for Tier-1 SOC analysts to rapidly validate and prioritize inbound detections.
