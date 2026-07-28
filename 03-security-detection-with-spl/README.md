@@ -87,6 +87,7 @@ Splunk alerts allow security teams to automate the detection of suspicious activ
 * **Operational Trigger Logic:** Monitors elevation of privileges. This surfaces administrative actions executed via sudo, allowing analysts to audit privileged commands and detect unauthorized policy violations.
 * **SPL Query Execution:** 
   The following query captures instances where the sudo subsystem is invoked and outputs a clean table detailing the transaction.
+  
   ```splunk
   index="linux_log" sudo| rex field=_raw "for user (?<user>\S+)"| table _time host user _raw
   ```
