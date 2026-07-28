@@ -1,7 +1,5 @@
-# Module 03: Security Detection Engineering with SPL
-
 ## 📌 Objective
-The objective of this lab is to create alert rules in Splunk Enterprise using SPL searches. The lab demonstrates how searches can be converted into scheduled or real-time alerts for detecting common security events.
+The objective of this lab is to create alert rules in Splunk Enterprise using SPL searches, and to validate that each alert actually works by triggering it with real activity. The lab demonstrates how searches can be converted into scheduled or real-time alerts for detecting common security events, and how those alerts can be tested to confirm they work in practice.
 
 ## 🎯 Learning Outcomes
 By the end of this lab, you will be able to:
@@ -9,11 +7,13 @@ By the end of this lab, you will be able to:
 - Configure scheduled and real-time alerts in Splunk Enterprise.
 - Define alert trigger conditions and thresholds.
 - Associate security detections with the MITRE ATT&CK framework.
+- Validate that alerts trigger correctly by generating real test activity.
 
 ## 📋 Prerequisites
 * Completion of Module 01 (Log Collection) and Module 02 (SPL Fundamentals).
 * Active ingest of Linux telemetry (`source="/var/log/auth.log"` or `sourcetype=syslog`).
 * Administrative access to the Splunk Search & Reporting app to save alert artifacts.
+* Ability to generate test activity on the Linux host (SSH logins, sudo commands, user creation) to trigger and validate alerts.
 
 ---
 
@@ -249,16 +249,20 @@ Triggered Alerts page showing SEC-DET-05 fired in real time, Critical severity.
 ## 4. Summary Matrix for SOC Triage
 The saved alerts are consolidated into this master operational matrix. This serves as the primary reference table for Tier-1 SOC analysts to rapidly validate and prioritize inbound detections.
 
-| Rule Identifier | Alert Name | Severity | Trigger Type | MITRE Mapping | Operational Focus |
-| :--- | :--- | :--- | :--- | :--- | :--- |
-| **SEC-DET-01** | Linux SSH Authentication Failure | Low | Scheduled (1h) | T1110 (Brute Force) | Tracks baseline authentication noise and spray attempts. |
-| **SEC-DET-02** | Linux SSH Authentication Success | Informational | Real-Time | T1078 (Valid Accounts) | Establishes access tracking and builds audit trails. |
-| **SEC-DET-03** | Excessive Successful Logins Detected | High | Scheduled (15m) | T1078 (Valid Accounts) | Identifies automated lateral movement or script abuse. |
-| **SEC-DET-04** | Privilege Escalation - Sudo Command Invoked | Medium | Real-Time | T1548 (Abuse Elevation Control) | Audits privilege elevation patterns and command logs. |
-| **SEC-DET-05** | Persistence - New Account or Group Created | Critical | Real-Time | T1136 (Create Account) | Flags backdoors and unauthorized user provisioning. |
-
+| Rule Identifier | Alert Name | Severity | Trigger Type | MITRE Mapping | Operational Focus | Validated |
+| :--- | :--- | :--- | :--- | :--- | :--- | :--- |
+| **SEC-DET-01** | Linux SSH Authentication Failure | Low | Scheduled (1h) | T1110 (Brute Force) | Tracks baseline authentication noise and spray attempts. | ✅ |
+| **SEC-DET-02** | Linux SSH Authentication Success | Informational | Real-Time | T1078 (Valid Accounts) | Establishes access tracking and builds audit trails. | ✅ |
+| **SEC-DET-03** | Excessive Successful Logins Detected | High | Scheduled (15m) | T1078 (Valid Accounts) | Identifies automated lateral movement or script abuse. | ✅ |
+| **SEC-DET-04** | Privilege Escalation - Sudo Command Invoked | Medium | Real-Time | T1548 (Abuse Elevation Control) | Audits privilege elevation patterns and command logs. | ✅ |
+| **SEC-DET-05** | Persistence - New Account or Group Created | Critical | Real-Time | T1136 (Create Account) | Flags backdoors and unauthorized user provisioning. | ✅ |
 
 ---
 
 ## 5. Conclusion
-In this lab, SPL searches were converted into Splunk alerts to detect common Linux security events. Alert schedules, trigger conditions, and severity levels were configured to automate the monitoring process. These alert rules provide a foundation for the investigation and threat hunting activities performed in later modules.
+
+In this lab, SPL searches were turned into Splunk alerts to catch common Linux security events. Each alert was set up with its own schedule, trigger condition, and severity level so it could run automatically.
+
+Every rule was then tested by actually performing the matching activity on the lab machine — failed and successful SSH logins, sudo commands, and new user creation — to confirm each alert really fires when it should.
+
+This gives a working, tested set of detections that later modules can build on for investigation and threat hunting.
