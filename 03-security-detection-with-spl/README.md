@@ -134,12 +134,15 @@ Each alert rule was tested against live activity generated on the lab environmen
 index="linux_log" "Failed password" earliest=-15m
 ```
 
-**Result:** Alert `SEC-DET-01` triggered successfully on **2026-07-28 13:00:01 IST** via its scheduled hourly run, appearing in Triggered Alerts with Low severity.
+**Result:** Alert `SEC-DET-01` triggered successfully via its scheduled hourly run, appearing in Triggered Alerts with Low severity.
 
 **Screenshots:**
-1. Terminal showing failed SSH login attempts *(attack)*
-2. Search results showing matched failed login events
-3. Triggered Alerts entry for SEC-DET-01
+Terminal showing failed SSH login attempts against the target host using invalid credentials.
+   ![Failed SSH login attempts](rule1_attack.png)
+
+Splunk search (index="linux_log" "Failed password" earliest=-15m) showing the matched failed login events with timestamps. ![Failed SSH login search results(rule1_search_results.png)
+
+Triggered Alerts page showing SEC-DET-01 fired on 2026-07-28 13:00:01 IST via its scheduled hourly run, Low severity. ![SEC-DET-01 triggered alert](rule1_triggered_alert.png)
 
 ---
 
