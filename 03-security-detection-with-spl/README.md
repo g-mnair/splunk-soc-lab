@@ -68,10 +68,7 @@ Splunk alerts allow security teams to automate the detection of suspicious activ
   The following query counts successful logins per user and host over the search window, triggering only when the count exceeds the defined threshold.
   
   ```splunk
-  index="linux_log" Accepted password earliest=-15m
-| rex field=_raw "for (?<user>\S+)"
-| stats count as success_count by host, user
-| where success_count > 10
+  index="linux_log" Accepted password earliest=-15m| rex field=_raw "for (?<user>\S+)"| stats count as success_count by host, user| where success_count > 10
   ```
 
 * **Splunk Alert Configuration Settings:**
