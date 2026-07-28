@@ -178,20 +178,18 @@ Triggered Alerts page showing SEC-DET-02 fired in real time immediately after th
 **Test Action:** Generated 12+ successful SSH logins in a short window using an automated loop (`sshpass` + `ssh`) to exceed the defined threshold of 10.
 
 **SPL Query Used:**
+
 ```spl
-index="linux_log" Accepted password earliest=-15m
-| rex field=_raw "for (?<user>\S+)"
-| stats count as success_count by host, user
-| where success_count > 10
+index="linux_log" Accepted password earliest=-15m| rex field=_raw "for (?<user>\S+)"| stats count as success_count by host, user| where success_count > 10
 ```
 
-**Result:** Alert `SEC-DET-03` triggered successfully, correctly identifying a count of 36 successful logins for user `kalivm` on host `kali` — well above the 10-event threshold.
+**Result:** Alert `SEC-DET-03` triggered successfully, correctly identifying a count of 12 successful logins for user `kalivm` on host `kali` — well above the 10-event threshold.
 
 **Screenshots:**
-Terminal showing the automated loop (sshpass + ssh) generating 12+ successful logins in a short window.
+Terminal showing the automated loop (sshpass + ssh) generating 12 successful logins in a short window.
 ![Automated login loop](rule3_attack.png)
 
-Splunk Statistics view showing success_count of 36 for user kalivm on host kali, exceeding the 10-event threshold.
+Splunk Statistics view showing success_count of 12 for user kalivm on host kali, exceeding the 10-event threshold.
 ![Excessive login count search results](rule3_search_results.png)
 
 Triggered Alerts page showing SEC-DET-03 fired on its 15-minute schedule, High severity.
@@ -204,10 +202,9 @@ Triggered Alerts page showing SEC-DET-03 fired on its 15-minute schedule, High s
 **Test Action:** Ran privileged commands on the target host (`sudo whoami`, `sudo ls /var/log`) while the real-time alert was active.
 
 **SPL Query Used:**
+
 ```spl
-index="linux_log" sudo
-| rex field=_raw "for user (?<user>\S+)"
-| table _time host user _raw
+index="linux_log" sudo| rex field=_raw "for user (?<user>\S+)"| table _time host user _raw
 ```
 
 **Result:** Alert `SEC-DET-04` triggered successfully in real time. Each `sudo` invocation generates multiple underlying log lines (session opened, command executed, session closed), and because the trigger is Per-Result, this produced 161 individual alert firings from 2 sudo commands — confirming the detection works and highlighting that per-result real-time alerting on `sudo` activity can generate significant alert volume in a production environment.
