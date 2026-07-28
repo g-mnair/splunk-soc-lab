@@ -145,9 +145,11 @@ Terminal showing failed SSH login attempts against the target host using invalid
   ![Failed SSH login attempts](rule1_attack.png)
   
 
+
 Splunk search (index="linux_log" "Failed password" earliest=-15m) showing the matched failed login events with timestamps.
 
 ![Failed SSH login search results](rule1_search_results.png)
+
 
 
 Triggered Alerts page showing SEC-DET-01 fired on 2026-07-28 13:00:01 IST via its scheduled hourly run, Low severity. 
@@ -174,9 +176,11 @@ Terminal showing a successful SSH login using valid credentials.
 ![Successful SSH login](rule2_attack.png)
 
 
+
 Splunk search (index="linux_log" "Accepted password" earliest=-15m) showing the matched successful login event.
 
 ![Successful SSH login search results](rule2_search_results.png)
+
 
 
 Triggered Alerts page showing SEC-DET-02 fired in real time immediately after the login, Informational severity.
@@ -204,9 +208,11 @@ Terminal showing the automated loop (sshpass + ssh) generating 12 successful log
 ![Automated login loop](rule3_attack.png)
 
 
+
 Splunk Statistics view showing success_count of 12 for user kalivm on host kali, exceeding the 10-event threshold.
 
 ![Excessive login count search results](rule3_search_results.png)
+
 
 
 Triggered Alerts page showing SEC-DET-03 fired on its 15-minute schedule, High severity.
@@ -234,9 +240,11 @@ Terminal showing privileged commands executed (sudo whoami, sudo ls /var/log).
 ![Sudo commands executed](rule4_attack.png)
 
 
+
 Splunk search results showing extracted user field and full command context (session opened,command run, session closed) from _raw.
 
 ![Sudo activity search results](rule4_search_results.png)
+
 
 
 Triggered Alerts page showing SEC-DET-04 fired in real time for each matching log line, Medium severity.
@@ -264,9 +272,11 @@ Terminal showing a new local user created (sudo useradd testuser2).
 ![New user creation](rule5_attack.png)
 
 
+
 Splunk search results showing populated name, UID, GID, home, and shell fields for the newly created account.
 
 ![New user creation search results](rule5_search_results.png)
+
 
 
 Triggered Alerts page showing SEC-DET-05 fired in real time, Critical severity.
