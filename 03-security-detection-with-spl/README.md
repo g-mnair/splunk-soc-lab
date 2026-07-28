@@ -88,7 +88,7 @@ Splunk alerts allow security teams to automate the detection of suspicious activ
 * **SPL Query Execution:** 
   The following query captures instances where the sudo subsystem is invoked and outputs a clean table detailing the transaction.
   ```splunk
-  index="linux_log" sudo | table _time, host, user, process, message | sort -_time
+  index="linux_log" sudo| rex field=_raw "for user (?<user>\S+)"| table _time host user _raw
   ```
 * **Splunk Alert Configuration Settings:**
   * **Alert Title:** `SEC-DET-04: Privilege Escalation - Sudo Command Invoked`
