@@ -1,4 +1,4 @@
-# Module 02: Security Detection With SPL
+# Module 03: Security Detection With SPL
 
 ## 📌 Objective
 The objective of this lab is to create alert rules in Splunk Enterprise using SPL searches, and to validate that each alert actually works by triggering it with real activity. The lab demonstrates how searches can be converted into scheduled or real-time alerts for detecting common security events, and how those alerts can be tested to confirm they work in practice.
